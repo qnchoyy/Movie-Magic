@@ -1,25 +1,14 @@
 const Movie = require('../models/Movie');
 
-const movies = [
-    {
-        _id: 1,
-        title: 'The Little Marmaid',
-        genre: 'Fantasy',
-        director: 'Rob Marshall',
-        year: '2023',
-        imageUrl: '/img/the-little-mermaid.jpg',
-        rating: '5',
-        description: 'amazing',
-    }
-]
-
 exports.getAll = () => {
-    // return movies.slice();
-    return [...movies]
+    const movies = Movie.find();
+
+    return movies;
 }
 
-exports.search = (title, genre, year) => {
-    let result = movies.slice();
+//TODO : filter result in mongoDB
+exports.search = async (title, genre, year) => {
+    let result = await Movie.find().lean();
 
     if (title) {
         result = result.filter(movie => movie.title.toLowerCase().includes(title.toLowerCase()));
@@ -36,12 +25,7 @@ exports.search = (title, genre, year) => {
     return result;
 }
 
-exports.getOne = (movieId) => {
-    const movie = movies.find(movie => movie._id == movieId);
+exports.getOne = (movieId) => Movie.findById(movieId);
 
-    return movie;
-}
 
-exports.create = (movieData) => {
-    return Movie.create(movieData);
-}
+exports.create = (movieData) => Movie.create(movieData);
