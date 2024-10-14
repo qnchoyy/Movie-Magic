@@ -1,4 +1,5 @@
 const Movie = require('../models/Movie');
+// const Cast = require('../models/Cast')
 
 exports.getAll = () => {
     const movies = Movie.find();
@@ -25,7 +26,7 @@ exports.search = async (title, genre, year) => {
     return result;
 }
 
-exports.getOne = (movieId) => Movie.findById(movieId);
+exports.getOne = (movieId) => Movie.findById(movieId).populate('casts');
 
 
 exports.create = (movieData) => Movie.create(movieData);
@@ -33,11 +34,12 @@ exports.create = (movieData) => Movie.create(movieData);
 exports.attach = async (movieId, castId) => {
     // return Movie.findByIdAndUpdate(movieId, { $push: { casts: castId }});
 
-    const movie = this.getOne(movieId);
+    const movie = await this.getOne(movieId);
+    // const cast = await Cast.findById(castId);
 
     // TODO: validate castId if exists
     // TODO: validate if cast is already added
-    movie.casts.push(castId);
+    movie.casts.push(castId)
 
     return movie.save();
 
