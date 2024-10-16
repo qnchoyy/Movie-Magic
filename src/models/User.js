@@ -10,8 +10,16 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-    }
+    },
 });
+
+userSchema.virtual('rePassword')
+    .set(function (value) {
+        // Validate
+        if (value !== this.password) {
+            throw new mongoose.MongooseError('Password missmatch!');
+        }
+    });
 
 userSchema.pre('save', async function () {
     const hash = await bcrypt.hash(this.password, 12);
