@@ -25,7 +25,6 @@ router.post('/create', isAuth, async (req, res) => {
 router.get('/movies/:movieId', async (req, res) => {
     const movieId = req.params.movieId;
     const movie = await movieService.getOne(movieId).lean();
-    // const casts = await castService.getByIds(movie.casts).lean();
 
     //TODO: This is not perfect , use handlebars helpers
     movie.ratingStars = '&#x2605'.repeat(movie.rating);
@@ -50,8 +49,6 @@ router.post('/movies/:movieId/attach', isAuth, async (req, res) => {
 });
 
 router.get('/movies/:movieId/edit', isAuth, async (req, res) => {
-
-
     const movie = await movieService.getOne(req.params.movieId).lean();
 
     res.render('movie/edit', { movie });
