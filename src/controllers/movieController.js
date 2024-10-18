@@ -2,7 +2,7 @@ const router = require('express').Router();
 
 const movieService = require('../services/movieService');
 const castService = require('../services/castService');
-const { isAuth } = require('../middlewares/authMiddleware')
+const { isAuth } = require('../middlewares/authMiddleware');
 
 router.get('/create', isAuth, (req, res) => {
     res.render('create');
@@ -10,6 +10,7 @@ router.get('/create', isAuth, (req, res) => {
 
 router.post('/create', isAuth, async (req, res) => {
     const newMovie = req.body;
+    newMovie.owner = req.user._id;
 
     try {
         await movieService.create(newMovie);
