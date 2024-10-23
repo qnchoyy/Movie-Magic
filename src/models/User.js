@@ -7,9 +7,13 @@ const userSchema = new mongoose.Schema({
         required: true,
         lowercase: true,
         unique: true,
+        match: [/@[a-zA-Z]+\.[a-zA-Z0-9]+$/, 'Inavlid Email Adress'],
+        minLength: [10, 'Email should be at least 10 characters'],
     },
     password: {
         type: String,
+        match: [/^[a-zA-Z0-9]+$/, 'Password should be alphanumeric'],
+        minLength: [6, 'Password should be at least 6 characters long'],
         required: true,
     },
 });
